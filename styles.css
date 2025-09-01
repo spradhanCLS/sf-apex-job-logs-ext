@@ -1,0 +1,18 @@
+.sflogs-btn {
+  font: inherit;
+  padding: 4px 8px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #f6f6f6;
+}
+.sflogs-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.sflogs-container a {
+  text-decoration: none;
+}
+.sflogs-container a:hover {
+  text-decoration: underline;
+}

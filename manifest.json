@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Salesforce Apex Job Logs Helper",
+  "version": "1.0.0",
+  "description": "Adds a Logs column to the Apex Jobs list with direct download links for related debug logs.",
+  "permissions": ["cookies", "storage", "scripting", "activeTab"],
+  "host_permissions": [
+    "https://*.salesforce.com/*",
+    "https://*.my.salesforce.com/*",
+    "https://*.lightning.force.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.salesforce.com/*",
+        "https://*.my.salesforce.com/*",
+        "https://*.lightning.force.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ]
+}
