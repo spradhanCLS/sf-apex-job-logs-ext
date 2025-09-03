@@ -3,7 +3,7 @@
   "name": "Salesforce Apex Job Logs Helper",
   "version": "1.0.0",
   "description": "Adds a Logs column to the Apex Jobs list with direct download links for related debug logs.",
-  "permissions": ["cookies", "storage", "scripting", "activeTab"],
+  "permissions": ["cookies"],
   "host_permissions": [
     "https://*.salesforce.com/*",
     "https://*.my.salesforce.com/*",
