@@ -179,31 +179,57 @@
     logs.forEach(async (rec, i) => {
       if (!rec.LogLength) return; // skip empty logs to avoid dead links
 
-      const a = document.createElement("a");
-      //   a.textContent =
-      //     i === 0
-      //       ? `Latest – ${isoToLocal(rec.StartTime)} (${formatBytes(
-      //           rec.LogLength
-      //         )})`
-      //       : `${isoToLocal(rec.StartTime)} • ${
-      //           rec.Operation || "Apex"
-      //         } (${formatBytes(rec.LogLength)})`;
+      // Create container for each log link with loading state
+      const linkContainer = document.createElement("div");
+      linkContainer.style.display = "flex";
+      linkContainer.style.alignItems = "center";
+      linkContainer.style.gap = "8px";
 
+      const a = document.createElement("a");
       a.textContent = `${rec.Operation || "Apex"} (${formatBytes(
         rec.LogLength
       )})`;
 
+      // Create loading spinner
+      const loadingSpinner = document.createElement("span");
+      loadingSpinner.textContent = "⏳";
+      loadingSpinner.style.fontSize = "12px";
+      loadingSpinner.title = "Preparing download...";
+
+      linkContainer.appendChild(loadingSpinner);
+      linkContainer.appendChild(a);
+      list.appendChild(linkContainer);
+
       try {
         a.href = await buildDownloadHref(rec);
+        // Remove loading spinner once href is ready
+        loadingSpinner.remove();
       } catch {
         // As a last resort, still try the console route
         const myBase = toMyDomain(getOrigin());
         a.href = `${myBase}/_ui/system/api/console/apexLogDownload.apexp?id=${rec.Id}`;
+        // Remove loading spinner even on error
+        loadingSpinner.remove();
       }
 
       a.target = "_blank";
       a.rel = "noopener";
-      list.appendChild(a);
+      
+      // Add click handler to show downloading state
+      a.addEventListener("click", () => {
+        const downloadingSpinner = document.createElement("span");
+        downloadingSpinner.textContent = "📥";
+        downloadingSpinner.style.fontSize = "12px";
+        downloadingSpinner.title = "Downloading...";
+        linkContainer.insertBefore(downloadingSpinner, a);
+        
+        // Remove downloading spinner after a delay (since we can't detect actual download completion)
+        setTimeout(() => {
+          if (downloadingSpinner.parentNode) {
+            downloadingSpinner.remove();
+          }
+        }, 3000);
+      });
     });
 
     container.appendChild(list);
