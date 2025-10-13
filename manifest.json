@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Salesforce Apex Job Logs Helper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Adds a Logs column to the Apex Jobs list with direct download links for related debug logs.",
   "permissions": ["cookies"],
   "host_permissions": [
